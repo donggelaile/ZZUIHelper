@@ -31,6 +31,7 @@
         NSString *className = [ZZClassHelper sharedInstance].curClass.className;
         [self.tabViewItems[0] setLabel:[NSString stringWithFormat:@"%@.h", className]];
         [self.tabViewItems[1] setLabel:[NSString stringWithFormat:@"%@.m", className]];
+        [self.tabViewItems[2] setLabel:[NSString stringWithFormat:@"%@.swift", className]];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setSelectedTabViewItemIndex:1];

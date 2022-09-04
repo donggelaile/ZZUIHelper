@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		669658DA28C368D60090BD7E /* ZZCodeSwiftFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 669658D928C368D60090BD7E /* ZZCodeSwiftFileViewController.m */; };
+		99698AE14D791848DE39FEB1 /* Pods_ZZUIHelper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF50555FE7E90915670F0FE1 /* Pods_ZZUIHelper.framework */; };
 		C2154E4A1E710C5100E3D18C /* ZZSettingItemsAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C2154E481E710C5100E3D18C /* ZZSettingItemsAddViewController.m */; };
 		C2154E4B1E710C5100E3D18C /* ZZSettingItemsAddViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C2154E491E710C5100E3D18C /* ZZSettingItemsAddViewController.xib */; };
 		C21789BC1E55D64500AF8BEE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C21789BB1E55D64500AF8BEE /* AppDelegate.m */; };
@@ -179,6 +181,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		12F4419050A1DA71BD142689 /* Pods-ZZUIHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZZUIHelper.release.xcconfig"; path = "Target Support Files/Pods-ZZUIHelper/Pods-ZZUIHelper.release.xcconfig"; sourceTree = "<group>"; };
+		669658D828C368D60090BD7E /* ZZCodeSwiftFileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZCodeSwiftFileViewController.h; sourceTree = "<group>"; };
+		669658D928C368D60090BD7E /* ZZCodeSwiftFileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZCodeSwiftFileViewController.m; sourceTree = "<group>"; };
+		669658DD28C390BD0090BD7E /* ZZUIHelper-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZZUIHelper-Bridging-Header.h"; sourceTree = "<group>"; };
+		A479F487BBDCEC89577AC3BE /* Pods-ZZUIHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZZUIHelper.debug.xcconfig"; path = "Target Support Files/Pods-ZZUIHelper/Pods-ZZUIHelper.debug.xcconfig"; sourceTree = "<group>"; };
+		BF50555FE7E90915670F0FE1 /* Pods_ZZUIHelper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZZUIHelper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2154E471E710C5100E3D18C /* ZZSettingItemsAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZZSettingItemsAddViewController.h; sourceTree = "<group>"; };
 		C2154E481E710C5100E3D18C /* ZZSettingItemsAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZZSettingItemsAddViewController.m; sourceTree = "<group>"; };
 		C2154E491E710C5100E3D18C /* ZZSettingItemsAddViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ZZSettingItemsAddViewController.xib; sourceTree = "<group>"; };
@@ -451,17 +459,38 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2256A8D1E680808008E7785 /* MGSFragaria.framework in Frameworks */,
+				99698AE14D791848DE39FEB1 /* Pods_ZZUIHelper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		669658D728C368950090BD7E /* ZZCodeSwiftFileViewController */ = {
+			isa = PBXGroup;
+			children = (
+				669658D828C368D60090BD7E /* ZZCodeSwiftFileViewController.h */,
+				669658D928C368D60090BD7E /* ZZCodeSwiftFileViewController.m */,
+			);
+			path = ZZCodeSwiftFileViewController;
+			sourceTree = "<group>";
+		};
+		8A5A9BB15BA66CC52206F5BB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A479F487BBDCEC89577AC3BE /* Pods-ZZUIHelper.debug.xcconfig */,
+				12F4419050A1DA71BD142689 /* Pods-ZZUIHelper.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		C21789AE1E55D64500AF8BEE = {
 			isa = PBXGroup;
 			children = (
 				C21789B91E55D64500AF8BEE /* ZZUIHelper */,
 				C21789B81E55D64500AF8BEE /* Products */,
+				8A5A9BB15BA66CC52206F5BB /* Pods */,
+				C6A75450E0B4287303E2BEF2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -494,6 +523,7 @@
 				C21789BA1E55D64500AF8BEE /* AppDelegate.h */,
 				C21789BB1E55D64500AF8BEE /* AppDelegate.m */,
 				C21789BE1E55D64500AF8BEE /* main.m */,
+				669658DD28C390BD0090BD7E /* ZZUIHelper-Bridging-Header.h */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -797,6 +827,7 @@
 		C2223A081E5875DA002CB428 /* ZZCodeAreaViewController */ = {
 			isa = PBXGroup;
 			children = (
+				669658D728C368950090BD7E /* ZZCodeSwiftFileViewController */,
 				C2B3F5FB1E62FB18000E42CE /* ZZCodeHFileViewController */,
 				C2B3F5FD1E62FB18000E42CE /* ZZCodeMFileViewController */,
 				C2223A091E5875F8002CB428 /* ZZCodeAreaViewController.h */,
@@ -1367,6 +1398,14 @@
 			path = Masonry;
 			sourceTree = "<group>";
 		};
+		C6A75450E0B4287303E2BEF2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF50555FE7E90915670F0FE1 /* Pods_ZZUIHelper.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1374,10 +1413,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C21789CB1E55D64500AF8BEE /* Build configuration list for PBXNativeTarget "ZZUIHelper" */;
 			buildPhases = (
+				B6CB79A4087D070BC8A89349 /* [CP] Check Pods Manifest.lock */,
 				C21789B31E55D64500AF8BEE /* Sources */,
 				C21789B41E55D64500AF8BEE /* Frameworks */,
 				C21789B51E55D64500AF8BEE /* Resources */,
 				C2256A901E680813008E7785 /* Embed Frameworks */,
+				43D188E0F4C545492F65E388 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1400,6 +1441,7 @@
 				TargetAttributes = {
 					C21789B61E55D64500AF8BEE = {
 						CreatedOnToolsVersion = 8.2.1;
+						LastSwiftMigration = 1300;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1485,6 +1527,49 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		43D188E0F4C545492F65E388 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ZZUIHelper/Pods-ZZUIHelper-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RegExCategories/RegExCategories.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RegExCategories.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ZZUIHelper/Pods-ZZUIHelper-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B6CB79A4087D070BC8A89349 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ZZUIHelper-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C21789B31E55D64500AF8BEE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1561,6 +1646,7 @@
 				C2223A101E5876B1002CB428 /* ZZMainViewController.m in Sources */,
 				C2154E4A1E710C5100E3D18C /* ZZSettingItemsAddViewController.m in Sources */,
 				C21DDEE31E6FF02A000BCD9C /* ZZUICollectionViewDelegateFlowLayout.m in Sources */,
+				669658DA28C368D60090BD7E /* ZZCodeSwiftFileViewController.m in Sources */,
 				C2B776D11E7157DE00D333E4 /* ZZCreatorSettingViewController.m in Sources */,
 				C2B3F5D61E60F621000E42CE /* ZZUtility.m in Sources */,
 				C2B3F6021E62FC96000E42CE /* ZZCodeHFileViewController.m in Sources */,
@@ -1698,8 +1784,10 @@
 		};
 		C21789CC1E55D64500AF8BEE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A479F487BBDCEC89577AC3BE /* Pods-ZZUIHelper.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1709,16 +1797,21 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ZZUIHelper/ZZPrefixHeader.pch";
 				INFOPLIST_FILE = ZZUIHelper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.58ganji.ZZUIHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZZUIHelper/ZZUIHelper-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		C21789CD1E55D64500AF8BEE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 12F4419050A1DA71BD142689 /* Pods-ZZUIHelper.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1728,9 +1821,11 @@
 				GCC_PREFIX_HEADER = "$(SRCROOT)/ZZUIHelper/ZZPrefixHeader.pch";
 				INFOPLIST_FILE = ZZUIHelper/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = com.58ganji.ZZUIHelper;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZZUIHelper/ZZUIHelper-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

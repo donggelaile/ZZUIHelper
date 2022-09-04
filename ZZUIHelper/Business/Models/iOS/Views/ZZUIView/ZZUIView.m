@@ -69,6 +69,14 @@
     return @"- (id)initWithFrame:(CGRect)frame";
 }
 
+- (NSString *)m_initMethodName_swift {
+    return @"override init(frame: CGRect)";
+}
+
+- (NSString *)m_superInitMethodName_swift {
+    return @"super.init(frame: frame)";
+}
+
 - (ZZCALayer *)layer
 {
     if (!_layer) {

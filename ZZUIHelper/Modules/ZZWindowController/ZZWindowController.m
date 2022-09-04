@@ -59,6 +59,15 @@
         return;
     }
     
+    // .swift
+    fileName = [[ZZClassHelper sharedInstance].curClass.className stringByAppendingString:@".swift"];
+    NSString *swiftPath = [path stringByAppendingPathComponent:fileName];
+    NSString *swiftCode = [[ZZCreatorManager sharedInstance] swiftFileForViewClass:curClass];
+    if (![self p_writeCode:swiftCode toFileAtPath:swiftPath]) {
+        
+        return;
+    }
+    
     [[NSWorkspace sharedWorkspace] openFile:path];
 }
 

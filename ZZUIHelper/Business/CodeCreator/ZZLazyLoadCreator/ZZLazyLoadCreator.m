@@ -12,12 +12,18 @@
 #import "ZZUIControl.h"
 #import "ZZUIView.h"
 #import "ZZUIViewController.h"
+#import "NSString+MMBJ.h"
+#import <RegExCategories/RegExCategories.h>
 
 @interface ZZLazyLoadCreator ()
 
 @property (nonatomic, strong) NSArray *codeBlocks;
 
+@property (nonatomic, strong) NSArray *swiftCodeBlocks;
+
 @property (nonatomic, strong) NSString *(^getterMethodForViewClass)(ZZNSObject *object);
+
+@property (nonatomic, strong) NSString *(^getterMethodForViewClass_siwft)(ZZNSObject *object,BOOL isPrivate);
 
 @end
 
@@ -53,6 +59,25 @@
             [getterCode appendFormat:@"}\nreturn _%@;\n", object.propertyName];
             [getterMethod addMethodContentCode:getterCode];
             NSString *code = [[getterMethod methodCode] stringByAppendingString:@"\n"];
+            return code;
+        }];
+
+//lazy var label: UILabel = {
+//    let view = UILabel()
+//    return view
+//}()
+
+        [self setGetterMethodForViewClass_siwft:^NSString *(ZZNSObject *object, BOOL isPublic) {
+            NSMutableString *code = @"".mutableCopy;
+            if (isPublic) {
+                [code appendFormat:@"public lazy var %@: %@ = {",object.propertyName,object.className];
+            } else {
+                [code appendFormat:@"lazy var %@: %@ = {",object.propertyName,object.className];
+            }
+            [code appendFormat:@"\n"];
+            [code appendFormat:@"\tlet view = %@()\n",object.className];
+            [code appendFormat:@"\treturn view\n}()\n"];
+            
             return code;
         }];
     }
@@ -179,6 +204,35 @@
     
     interfaceCode = [interfaceCode stringByAppendingString:@"@end\n"];
     return interfaceCode;
+}
+
+#pragma mark - # swift
+- (NSString *)swiftFileForViewClass:(ZZUIResponder *)viewClass {
+    NSString *fileName = [viewClass.className stringByAppendingString:@".swift"];
+    NSString *copyrightCode = [[ZZUIHelperConfig sharedInstance] copyrightCodeByFileName:fileName];
+    NSString *code = copyrightCode;
+    // 类实现
+    NSString *implementationCode = [self swift_implementationCodeForViewClass:viewClass];
+    code = [code stringByAppendingString:implementationCode];
+    return code;
+}
+
+- (NSString *)swift_implementationCodeForViewClass:(ZZUIResponder *)viewClass {
+    NSMutableString *implementationCode = [NSMutableString stringWithFormat:@"import UIKit \n\n"];
+    [implementationCode appendFormat:@"class %@: %@ {\n", viewClass.className, viewClass.superClassName];
+    
+    NSMutableString *innerCode = @"".mutableCopy;
+    for (ZZCreatorCodeBlock *block in self.swiftCodeBlocks) {
+        NSString *code = block.action(viewClass);
+        if (code.length > 0) {
+            [innerCode appendString:block.action(viewClass)];
+        }
+    }
+    innerCode = [[innerCode appentOneTabForPerLine] mutableCopy];
+    
+    [implementationCode appendString:innerCode];
+    [implementationCode appendString:@"}\n"];
+    return implementationCode;
 }
 
 #pragma mark - # Getter
@@ -355,6 +409,141 @@
         [_getterCodeBlock setRemarks:@"Getter方法，通过惰性初始化的方式创建subViews"];
     }
     return _getterCodeBlock;
+}
+
+#pragma mark - siwft getters
+- (NSArray *)swiftCodeBlocks
+{
+    if (!_swiftCodeBlocks) {
+        _swiftCodeBlocks = @[self.getterCodeBlock_swift,
+                             self.lifeCycleCodeBlock_swift,
+                             self.delegateCodeBlock_swift,
+                             self.eventCodeBlock_swift,
+                             self.privateCodeBlock_swift];
+    }
+    return _swiftCodeBlocks;
+}
+
+- (ZZCreatorCodeBlock *)lifeCycleCodeBlock_swift
+{
+    if (!_lifeCycleCodeBlock_swift) {
+        _lifeCycleCodeBlock_swift = [[ZZCreatorCodeBlock alloc] initWithBlockName:@"Life Cycle" action:^NSString *(ZZUIResponder *viewClass) {
+            if ([[viewClass class] isSubclassOfClass:[ZZUIView class]]) {
+                NSString *code = [NSString stringWithFormat:@"\n%@ Life Cycle\n", PMARK];
+                NSArray *childViewArray = viewClass.childViewsArray;
+                if (childViewArray.count > 0) {
+                    ZZMethod *initMethod = [[ZZMethod alloc] initWithMethodName:[(ZZUIView *)viewClass m_initMethodName_swift] isSwift:YES];
+                    
+                    NSMutableString *initCode = [NSMutableString stringWithFormat:@"%@\n", [(ZZUIView *)viewClass m_superInitMethodName_swift]];
+                    for (ZZUIView *view in childViewArray) {
+                        [initCode appendFormat:@"%@.addSubview(%@)\n", view.superViewName, view.propertyName];
+                    }
+                    
+                    if ([ZZUIHelperConfig sharedInstance].layoutLibrary == ZZUIHelperLayoutLibraryMasonry) {
+                        [initCode appendString:@"self.setAutoLayout()\n"];
+                    }
+                    
+                    [initMethod addMethodContentCode:initCode];
+                    code = [code stringByAppendingString:[initMethod methodCode]];
+                }
+                code = [code stringByAppendingString:@"\n"];
+                
+                ZZMethod *requireCoder = [[ZZMethod alloc] initWithMethodName:@"required init?(coder: NSCoder)" isSwift:YES];
+                [requireCoder addMethodContentCode:@"fatalError(\"init(coder:) has not been implemented\")"];
+                code = [code stringByAppendingFormat:@"%@\n",[requireCoder methodCode]];
+                return code;
+            }
+            return @"";
+        }];
+        [_lifeCycleCodeBlock_swift setRemarks:@"初始化函数，声明周期函数"];
+    }
+    return _lifeCycleCodeBlock_swift;
+}
+
+- (ZZCreatorCodeBlock *)delegateCodeBlock_swift
+{
+    if (!_delegateCodeBlock_swift) {
+        _delegateCodeBlock_swift = [[ZZCreatorCodeBlock alloc] initWithBlockName:@"Delegate" action:^NSString *(ZZUIResponder *viewClass) {
+            return nil;
+        }];
+        [_delegateCodeBlock_swift setRemarks:@"SubView的代理方法"];
+    }
+    return _delegateCodeBlock_swift;
+}
+
+- (ZZCreatorCodeBlock *)eventCodeBlock_swift
+{
+    if (!_eventCodeBlock_swift) {
+        _eventCodeBlock_swift = [[ZZCreatorCodeBlock alloc] initWithBlockName:@"Event Response" action:^NSString *(ZZUIResponder *viewClass) {
+            return nil;
+        }];
+        [_eventCodeBlock_swift setRemarks:@"SubView的事件响应函数"];
+    }
+    return _eventCodeBlock_swift;
+}
+
+- (ZZCreatorCodeBlock *)privateCodeBlock_swift
+{
+    if (!_privateCodeBlock_swift) {
+        _privateCodeBlock_swift = [[ZZCreatorCodeBlock alloc] initWithBlockName:@"Private Methods" action:^NSString *(ZZUIResponder *viewClass) {
+            NSArray *childViews = viewClass.childViewsArray;
+            if (childViews.count > 0 && [ZZUIHelperConfig sharedInstance].layoutLibrary == ZZUIHelperLayoutLibraryMasonry) {
+                NSString *privateCode = [NSString stringWithFormat:@"%@ Private Methods\n", PMARK];
+                
+                ZZMethod *method = [[ZZMethod alloc] initWithMethodName:@"func setAutoLayout()" isSwift:YES];
+                NSMutableString *code = [[NSMutableString alloc] init];
+                for (ZZUIView *view in childViews) {
+                    [code appendString:view.snapkitCode];
+                }
+                [method addMethodContentCode:code];
+                NSString *orgStr = method.methodCode;
+                NSString *methodCode = [self removerSnpapkitEnter:orgStr];
+                
+                privateCode = [privateCode stringByAppendingFormat:@"%@", methodCode];
+                return privateCode;
+            }
+            return nil;
+        }];
+        [_privateCodeBlock_swift setRemarks:@"类的私有方法，如Masonry的布局函数"];
+    }
+    return _privateCodeBlock_swift;
+}
+
+- (NSString*)removerSnpapkitEnter:(NSString*)orgStr {
+    NSError *error;
+    NSRegularExpression *rx = [[NSRegularExpression alloc] initWithPattern:@"makeConstraints \\{\\n\\t\\tmake in" options:0 error:&error];
+    return [rx replace:orgStr withDetailsBlock:^NSString *(RxMatch *match) {
+        return @"makeConstraints { make in";
+    }];
+}
+
+
+- (ZZCreatorCodeBlock *)getterCodeBlock_swift
+{
+    if (!_getterCodeBlock_swift) {
+        __weak typeof(self) weakSelf = self;
+        _getterCodeBlock_swift = [[ZZCreatorCodeBlock alloc] initWithBlockName:@"Getters" action:^NSString *(ZZUIResponder *viewClass) {
+            if (viewClass.interfaceProperties.count + viewClass.extensionProperties.count > 0) {
+                NSString *getterCode = [NSString stringWithFormat:@"%@ Getter\n", PMARK];
+                for (ZZNSObject *resp in viewClass.interfaceProperties) {
+                    NSString *code = weakSelf.getterMethodForViewClass_siwft(resp,YES);
+                    if (code.length > 0) {
+                        getterCode = [getterCode stringByAppendingString:code];
+                    }
+                }
+                for (ZZNSObject *resp in viewClass.extensionProperties) {
+                    NSString *code = weakSelf.getterMethodForViewClass_siwft(resp,NO);
+                    if (code.length > 0) {
+                        getterCode = [getterCode stringByAppendingString:code];
+                    }
+                }
+                return getterCode;
+            }
+            return nil;
+        }];
+        [_getterCodeBlock_swift setRemarks:@"Getter方法，通过惰性初始化的方式创建subViews"];
+    }
+    return _getterCodeBlock_swift;
 }
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "NSString+MMBJ.h"
+#import <RegExCategories/RegExCategories.h>
 
 @implementation NSString (MMBJ)
 
@@ -47,6 +48,25 @@
         ok = [scan scanFloat:&vFloat] && [scan isAtEnd];
     }
     return ok;
+}
+
+- (NSString*)appentOneTabForPerLine {
+    NSArray *arr = [self componentsSeparatedByString:@"\n"];
+    NSMutableString *res = @"".mutableCopy;
+    [arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [res appendFormat:@"\t%@\n", obj];
+    }];
+    return res;
+}
+
+- (NSArray<NSString *> *)parsFromSwiftFunc {
+    NSString *first = [self firstMatch:RX(@"\\(.*?\\)")];
+    NSArray<NSString*> *temp = [first componentsSeparatedByString:@","];
+    NSMutableArray *res = @[].mutableCopy;
+    [temp enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [res addObject:obj.strip];
+    }];
+    return res;
 }
 
 @end

@@ -18,4 +18,8 @@
 
 - (BOOL)isPureNumber;
 
+- (NSString*)appentOneTabForPerLine;
+
+- (NSArray<NSString*>*)parsFromSwiftFunc;
+
 @end

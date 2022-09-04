@@ -10,7 +10,7 @@
 
 @interface ZZParam : NSObject
 
-@property (nonatomic, strong, readonly) NSString *param;
+@property (nonatomic, strong) NSString *param;
 
 @property (nonatomic, strong, readonly) NSString *paramType;
 

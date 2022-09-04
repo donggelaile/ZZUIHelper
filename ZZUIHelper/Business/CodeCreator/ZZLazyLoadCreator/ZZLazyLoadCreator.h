@@ -18,4 +18,10 @@
 @property (nonatomic, strong) ZZCreatorCodeBlock *privateCodeBlock;
 @property (nonatomic, strong) ZZCreatorCodeBlock *getterCodeBlock;
 
+@property (nonatomic, strong) ZZCreatorCodeBlock *lifeCycleCodeBlock_swift;
+@property (nonatomic, strong) ZZCreatorCodeBlock *delegateCodeBlock_swift;
+@property (nonatomic, strong) ZZCreatorCodeBlock *eventCodeBlock_swift;
+@property (nonatomic, strong) ZZCreatorCodeBlock *privateCodeBlock_swift;
+@property (nonatomic, strong) ZZCreatorCodeBlock *getterCodeBlock_swift;
+
 @end

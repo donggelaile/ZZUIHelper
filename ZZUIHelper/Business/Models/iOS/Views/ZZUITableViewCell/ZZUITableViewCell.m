@@ -20,5 +20,13 @@
     return @"- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier";
 }
 
+- (NSString *)m_initMethodName_swift {
+    return @"override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?)";
+}
+
+- (NSString *)m_superInitMethodName_swift {
+    return @"super.init(style: style, reuseIdentifier: reuseIdentifier)";
+}
+
 
 @end

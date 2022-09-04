@@ -64,6 +64,7 @@ typedef NS_ENUM(NSInteger, ZZLayoutAttributeType) {
 
 @property (nonatomic, strong) NSArray *allAttributes;
 @property (nonatomic, strong) NSArray *selectedAttributes;
+@property (nonatomic, assign) BOOL isSnapkit;
 
 + (NSString *)attributeNameForType:(ZZLayoutAttributeType)attributeType;
 

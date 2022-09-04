@@ -12,6 +12,8 @@
 @interface ZZUIView : ZZUIResponder
 
 @property (nonatomic, strong) NSString *m_initMethodName;
+@property (nonatomic, strong) NSString *m_initMethodName_swift;
+@property (nonatomic, strong) NSString *m_superInitMethodName_swift;
 
 @property (nonatomic, strong) ZZCALayer *layer;
 

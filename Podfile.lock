@@ -1,0 +1,16 @@
+PODS:
+  - RegExCategories (1.0)
+
+DEPENDENCIES:
+  - RegExCategories (~> 1.0)
+
+SPEC REPOS:
+  trunk:
+    - RegExCategories
+
+SPEC CHECKSUMS:
+  RegExCategories: e68befacacd5bda853c88f70ec745cb2d0cfb89c
+
+PODFILE CHECKSUM: 69ba0bdd63a448ccf03b3f2790eb699e9f886d73
+
+COCOAPODS: 1.11.2

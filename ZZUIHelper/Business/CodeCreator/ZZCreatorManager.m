@@ -43,6 +43,10 @@
     return [self.curCreator mFileForViewClass:viewClass];
 }
 
+- (NSString *)swiftFileForViewClass:(ZZUIResponder *)viewClass {
+    return [self.curCreator swiftFileForViewClass:viewClass];;
+}
+
 #pragma mark - # Getter
 - (NSArray *)creatorList
 {

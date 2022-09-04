@@ -16,4 +16,6 @@
 
 - (NSString *)mFileForViewClass:(ZZUIResponder *)viewClass;
 
+- (NSString *)swiftFileForViewClass:(ZZUIResponder *)viewClass;
+
 @end

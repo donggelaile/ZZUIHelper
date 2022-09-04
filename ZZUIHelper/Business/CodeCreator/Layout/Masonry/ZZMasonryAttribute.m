@@ -31,38 +31,72 @@
 
 - (NSString *)relationName
 {
-    switch (self.relation) {
-        case ZZLayoutRelationEqual:
-            return @"mas_equalTo";
-            break;
-        case ZZLayoutRelationLessThanEqual:
-            return @"mas_lessThanOrEqualTo";
-            break;
-        case ZZLayoutRelationGreaterThanEqual:
-            return @"mas_greaterThanOrEqualTo";
-            break;
-            
-        default:
-            break;
+    if (self.isSnapkit) {
+        switch (self.relation) {
+            case ZZLayoutRelationEqual:
+                return @"equalTo";
+                break;
+            case ZZLayoutRelationLessThanEqual:
+                return @"lessThanOrEqualTo";
+                break;
+            case ZZLayoutRelationGreaterThanEqual:
+                return @"greaterThanOrEqualTo";
+                break;
+                
+            default:
+                break;
+        }
+    } else {
+        switch (self.relation) {
+            case ZZLayoutRelationEqual:
+                return @"mas_equalTo";
+                break;
+            case ZZLayoutRelationLessThanEqual:
+                return @"mas_lessThanOrEqualTo";
+                break;
+            case ZZLayoutRelationGreaterThanEqual:
+                return @"mas_greaterThanOrEqualTo";
+                break;
+                
+            default:
+                break;
+        }
     }
     return @"";
 }
 
 - (NSString *)constantRelationName
 {
-    switch (self.constantRelation) {
-        case ZZLayoutConstantRelationOffset:
-            return @"mas_offset";
-            break;
-        case ZZLayoutConstantRelationMutipliedBy:
-            return @"mutipliedBy";
-            break;
-        case ZZLayoutConstantRelationDevidedBy:
-            return @"devidedBy";
-            break;
-            
-        default:
-            break;
+    if (self.isSnapkit) {
+        switch (self.constantRelation) {
+            case ZZLayoutConstantRelationOffset:
+                return @"offset";
+                break;
+            case ZZLayoutConstantRelationMutipliedBy:
+                return @"mutipliedBy";
+                break;
+            case ZZLayoutConstantRelationDevidedBy:
+                return @"devidedBy";
+                break;
+                
+            default:
+                break;
+        }
+    } else {
+        switch (self.constantRelation) {
+            case ZZLayoutConstantRelationOffset:
+                return @"mas_offset";
+                break;
+            case ZZLayoutConstantRelationMutipliedBy:
+                return @"mutipliedBy";
+                break;
+            case ZZLayoutConstantRelationDevidedBy:
+                return @"devidedBy";
+                break;
+                
+            default:
+                break;
+        }
     }
     return @"";
 }

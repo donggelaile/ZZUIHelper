@@ -7,6 +7,7 @@
 //
 
 #import "ZZMethod.h"
+#import <RegExCategories/RegExCategories.h>
 
 @interface ZZMethod ()
 
@@ -28,6 +29,11 @@
 
 - (id)initWithMethodName:(NSString *)methodName
 {
+    return [self initWithMethodName:methodName selected:YES];
+}
+
+- (id)initWithMethodName:(NSString *)methodName isSwift:(BOOL)isSwift {
+    self.isSwift = isSwift;
     return [self initWithMethodName:methodName selected:YES];
 }
 
@@ -86,81 +92,124 @@
     }
     _methodName = code;
     
-    // 方法类型
-    _actionName = @"";
-    if ([code hasPrefix:@"-"]) {
-        code = [[code stringByReplacingOccurrencesOfString:@"-" withString:@""] strip];
-        _methodNameWithoutParams = @"- ";
-    }
-    if ([code hasPrefix:@"+"]) {
-        _isClassMethod = YES;
-        code = [[code stringByReplacingOccurrencesOfString:@"+" withString:@""] strip];
-        _methodNameWithoutParams = @"+ ";
-    }
-    
-    // 返回值
-    NSArray *codeArray = [code componentsSeparatedByString:@")"];
-    if (codeArray.count == 0 || [codeArray[0] length] == 0) {
-        NSLog(@"方法名解析失败");
-        return;
-    }
-    _returnType = [codeArray[0] substringFromIndex:1];
-    code = [[code substringFromIndex:_returnType.length + 2] strip];
-    _returnType = [_returnType strip];
-//    NSLog(@"返回值类型：(%@)", self.returnType);
-    
-    // 方法名和参数
-    if (![code containsString:@"("]) {   // 无参数
-        _actionName = [_actionName stringByAppendingString:code];
-        _params = nil;
-    }
-    else {      // 有参数
-        // 获取所有参数的类型
-        codeArray = [code componentsSeparatedByString:@"("];
-        codeArray = [codeArray subarrayWithRange:NSMakeRange(1, codeArray.count - 1)];  // 去除第0个
-        NSMutableArray *types = [[NSMutableArray alloc] init];
-        for (NSString *str in codeArray) {
-            NSString *type = [str componentsSeparatedByString:@")"][0];
-            code = [code stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"(%@)", type] withString:@""];
-            type = type.strip;
-            [types addObject:type];
+    if (self.isSwift) {
+        // 方法类型
+        _actionName = @"";
+        if ([code hasPrefix:@"-"]) {
+            code = [[code stringByReplacingOccurrencesOfString:@"-" withString:@""] strip];
+            _methodNameWithoutParams = @"- ";
+        }
+        if ([code hasPrefix:@"+"]) {
+            _isClassMethod = YES;
+            code = [[code stringByReplacingOccurrencesOfString:@"+" withString:@""] strip];
+            _methodNameWithoutParams = @"+ ";
         }
         
-        NSMutableArray *params = [[NSMutableArray alloc] init];
-        codeArray = [code componentsSeparatedByString:@" "];
-        for (NSString *str in codeArray) {
-            NSArray *k_n = [str componentsSeparatedByString:@":"];
-            if (k_n.count != 2) {
-                NSLog(@"方法名解析失败");
-                return;
-            }
-            NSString *title = k_n[0];
-            _actionName = [_actionName stringByAppendingFormat:@"%@:", title];
-            
-            NSString *param = k_n[1];
-            [params addObject:param];
+        // 返回值
+        NSArray *codeArray = [code componentsSeparatedByString:@"->"];
+        if (codeArray.count == 0 || [[codeArray firstObject] isEqualToString:code]) {
+            _returnType = @"Void";
+        } else {
+            _returnType = [[codeArray lastObject] strip];
         }
-        _methodNameWithoutParams = [_methodNameWithoutParams stringByAppendingString:_actionName];
-//        NSLog(@"方法名-无参数：(%@)", self.methodNameWithoutParams);
+    //    NSLog(@"返回值类型：(%@)", self.returnType);
         
-        // 参数
-        if (types.count > 0 || params.count > 0) {
-            if (types.count != params.count) {
-                NSLog(@"参数解析失败");
-                return;
-            }
-            NSMutableArray *data = [[NSMutableArray alloc] init];
-            for (int i = 0; i < types.count; i++) {
-                NSString *type = types[i];
-                NSString *name = params[i];
+        // 方法名和参数
+        NSArray <NSString*>*parArr = [code parsFromSwiftFunc];
+        NSMutableArray *data = [[NSMutableArray alloc] init];
+        [parArr enumerateObjectsUsingBlock:^(NSString* obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            obj = [obj substringWithRange:NSMakeRange(1, obj.length-2)];
+            if (obj.length) {
+                NSArray *temp = [obj componentsSeparatedByString:@":"];
+                NSString *type = [[temp lastObject] strip];
+                NSString *name = [[[[temp firstObject] componentsSeparatedByString:@" "] firstObject] strip];
                 ZZParam *param = [[ZZParam alloc] initWithType:type andName:name];
+                param.param = obj;
                 [data addObject:param];
-//                NSLog(@"参数：(%@)", param.param);
             }
-            _params = data;
+        }];
+        _params = data;
+        
+        _methodNameWithoutParams = [[code firstMatch:RX(@" .*?\(")] strip];
+
+        self.superMethodName = code;
+    } else {
+        // 方法类型
+        _actionName = @"";
+        if ([code hasPrefix:@"-"]) {
+            code = [[code stringByReplacingOccurrencesOfString:@"-" withString:@""] strip];
+            _methodNameWithoutParams = @"- ";
         }
+        if ([code hasPrefix:@"+"]) {
+            _isClassMethod = YES;
+            code = [[code stringByReplacingOccurrencesOfString:@"+" withString:@""] strip];
+            _methodNameWithoutParams = @"+ ";
+        }
+        
+        // 返回值
+        NSArray *codeArray = [code componentsSeparatedByString:@")"];
+        if (codeArray.count == 0 || [codeArray[0] length] == 0) {
+            NSLog(@"方法名解析失败");
+            return;
+        }
+        _returnType = [codeArray[0] substringFromIndex:1];
+        code = [[code substringFromIndex:_returnType.length + 2] strip];
+        _returnType = [_returnType strip];
+    //    NSLog(@"返回值类型：(%@)", self.returnType);
+        
+        // 方法名和参数
+        if (![code containsString:@"("]) {   // 无参数
+            _actionName = [_actionName stringByAppendingString:code];
+            _params = nil;
+        }
+        else {      // 有参数
+            // 获取所有参数的类型
+            codeArray = [code componentsSeparatedByString:@"("];
+            codeArray = [codeArray subarrayWithRange:NSMakeRange(1, codeArray.count - 1)];  // 去除第0个
+            NSMutableArray *types = [[NSMutableArray alloc] init];
+            for (NSString *str in codeArray) {
+                NSString *type = [str componentsSeparatedByString:@")"][0];
+                code = [code stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"(%@)", type] withString:@""];
+                type = type.strip;
+                [types addObject:type];
+            }
+            
+            NSMutableArray *params = [[NSMutableArray alloc] init];
+            codeArray = [code componentsSeparatedByString:@" "];
+            for (NSString *str in codeArray) {
+                NSArray *k_n = [str componentsSeparatedByString:@":"];
+                if (k_n.count != 2) {
+                    NSLog(@"方法名解析失败");
+                    return;
+                }
+                NSString *title = k_n[0];
+                _actionName = [_actionName stringByAppendingFormat:@"%@:", title];
+                
+                NSString *param = k_n[1];
+                [params addObject:param];
+            }
+            _methodNameWithoutParams = [_methodNameWithoutParams stringByAppendingString:_actionName];
+    //        NSLog(@"方法名-无参数：(%@)", self.methodNameWithoutParams);
+            
+            // 参数
+            if (types.count > 0 || params.count > 0) {
+                if (types.count != params.count) {
+                    NSLog(@"参数解析失败");
+                    return;
+                }
+                NSMutableArray *data = [[NSMutableArray alloc] init];
+                for (int i = 0; i < types.count; i++) {
+                    NSString *type = types[i];
+                    NSString *name = params[i];
+                    ZZParam *param = [[ZZParam alloc] initWithType:type andName:name];
+                    [data addObject:param];
+    //                NSLog(@"参数：(%@)", param.param);
+                }
+                _params = data;
+            }
+        }
+        self.superMethodName = code;
     }
-    self.superMethodName = code;
     
 //    NSLog(@"方法名：(%@)", self.methodName);
 }

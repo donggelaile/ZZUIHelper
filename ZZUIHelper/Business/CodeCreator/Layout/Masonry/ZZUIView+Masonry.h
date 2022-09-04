@@ -15,4 +15,9 @@
 
 @property (nonatomic, strong, readonly) NSString *masonryContentCode;
 
+
+@property (nonatomic, strong, readonly) NSString *snapkitCode;
+
+@property (nonatomic, strong, readonly) NSString *snapkitContentCode;
+
 @end

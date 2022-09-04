@@ -11,6 +11,8 @@
 
 @interface ZZMethod : NSObject
 
+@property (nonatomic, assign) BOOL isSwift;
+
 @property (nonatomic, strong, readonly) NSString *methodCode;
 
 @property (nonatomic, assign) BOOL selected;
@@ -38,6 +40,8 @@
 @property (nonatomic, strong, readonly) NSString *methodContent;
 
 - (id)initWithMethodName:(NSString *)methodName;
+
+- (id)initWithMethodName:(NSString *)methodName isSwift:(BOOL)isSwift;
 
 - (id)initWithMethodName:(NSString *)methodName selected:(BOOL)selected;
 
