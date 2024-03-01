@@ -7,5 +7,6 @@ target 'ZZUIHelper' do
 
   # Pods for ZZUIHelper
   pod 'RegExCategories', '~> 1.0'
-
+  pod 'Fragaria', :podspec => 'Fragaria.podspec.json'
+  
 end
